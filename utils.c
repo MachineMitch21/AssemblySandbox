@@ -48,9 +48,12 @@ unsigned int is_palindrome(const char* str) {
   
   if (len <= 3) return 0;
 
+  // This is an undefined reference to floor when using the above 'len' variable
+  // Why?  I do not know... :(
+  // double m = floor((double)len * .5f);  
   double m = floor(strlen(str) * .5f);
-  for (int i = 0, j = len - 1; i <= m && j >= m; i++, j--) {
-    if (to_lower(str[i]) != to_lower(str[j])) {
+  for (int i = 0; i <= m; i++) {
+    if (to_lower(str[i]) != to_lower(str[len - 1 - i])) {
       return 0;
     }
   }
