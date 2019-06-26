@@ -1,1 +1,1 @@
-rm obj/*.o dist/*
+rm obj/*.o dist/* ./*.s
