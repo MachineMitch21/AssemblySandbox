@@ -10,13 +10,17 @@ typedef struct {
 } Student;
 
 char to_lower(char in) {
-  if ((in >= 0x61 && in <= 0x7A) || !(in >= 0x41 && in <= 0x5A)) return in;
+  if ((in >= 0x61 && in <= 0x7A) || !(in >= 0x41 && in <= 0x5A)) {
+		return in;
+	}
   
 	return in + 0x20;
 }
 
 char to_upper(char in) {
-  if ((in >= 0x41 && in <= 0x5A) || !(in >= 0x61 && in <= 0x7A)) return in;
+  if ((in >= 0x41 && in <= 0x5A) || !(in >= 0x61 && in <= 0x7A)) {
+		return in;
+	}
   
 	return in - 0x20;
 }
