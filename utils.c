@@ -9,6 +9,27 @@ typedef struct {
   char addr[64];
 } Student;
 
+void strrev(char* str) {
+	int len = strlen(str);
+	int m = floor(strlen(str) * .5f);
+	for (int i = 0; i < m; i++) {
+		char temp = str[i];
+		str[i] = str[len - 1 - i];
+		str[len - 1 - i] = temp;
+	}
+}
+
+void to_string(char* buffer, int n, int divisor) {
+	int d = 0;
+	int count = 0;
+	while ((d = n % divisor) != 0) {
+		buffer[count++] = d + 0x30;
+		n/=divisor;
+	}
+	strrev(buffer);
+	buffer[count] = '\0';
+}
+
 char to_lower(char in) {
   if ((in >= 0x61 && in <= 0x7A) || !(in >= 0x41 && in <= 0x5A)) {
 		return in;
