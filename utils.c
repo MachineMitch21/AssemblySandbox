@@ -10,20 +10,15 @@ typedef struct {
 } Student;
 
 char to_lower(char in) {
-  // 0x5A is the hex ascii code for a 'Z'
-  // So if we are above that, we must already be a lowercase letter
-  // TODO: Don't add 0x20 if it isn't a capital letter?
-  if (in > 0x5A) return in;
-  // covering the 32 space difference between lowercase and uppercase letters on the ascii chart
-  else return in + 0x20;
+  if ((in >= 0x61 && in <= 0x7A) || !(in >= 0x41 && in <= 0x5A)) return in;
+  
+	return in + 0x20;
 }
 
 char to_upper(char in) {
-  // 0x61 is the hex ascii code for 'a'
-  // So if we are below that, we must already be an uppercase letter
-  // TODO: Don't sub 0x20 if it isn't a lowercase letter?
-  if (in < 0x61) return in;
-  else return in - 0x20;
+  if ((in >= 0x41 && in <= 0x5A) || !(in >= 0x61 && in <= 0x7A)) return in;
+  
+	return in - 0x20;
 }
 
 Student* create_student(unsigned int id, char name[64], char addr[64]) {
