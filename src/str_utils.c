@@ -43,7 +43,9 @@ char* str_to_lower(char* str) {
 	int i = 0;
 	while (str[i] != '\0') {
 		str[i] = to_lower(str[i]);
+    i++;
 	}
+  return str;
 }
 
 char* str_to_upper(char* str) {
@@ -51,6 +53,7 @@ char* str_to_upper(char* str) {
 	while (str[i] != '\0') {
 		str[i] = to_upper(str[i]);
 	}
+  return str;
 }
 
 unsigned int is_palindrome(const char* str) {
@@ -73,10 +76,15 @@ unsigned int is_palindrome(const char* str) {
 
 unsigned int is_anagram(const char* left, const char* right) {
 	char temp_l[32], temp_r[32];
+  memset(temp_l, 0, 32);
+  memset(temp_r, 0, 32);
 	strcpy(temp_l, left);
 	strcpy(temp_r, right);
 	merge_sort(temp_l, 0, strlen(temp_l));
 	merge_sort(temp_r, 0, strlen(temp_r));
+
+  printf("%s, %s\n", temp_l, left);
+  printf("%s, %s\n", temp_r, right);
 
 	if (strcmp(str_to_lower(temp_l), str_to_lower(temp_r)) == 0) {
 		return 1;
