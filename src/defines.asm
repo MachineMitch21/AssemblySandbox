@@ -1,3 +1,6 @@
+%ifndef DEFINES_ASM
+%define DEFINES_ASM
+
 STDIN 					equ 0
 STDOUT 					equ 1
 STDERR 					equ 2
@@ -29,3 +32,5 @@ SYS_PTRACE			equ 0x1a
 SYS_ALARM				equ 0x1b
 SYS_FSTAT				equ 0x1c
 SYS_PAUSE				equ 0x1d
+
+%endif
