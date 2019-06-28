@@ -18,7 +18,7 @@ I have no particular reason for doing so other than to keep dependencies as limi
 
 At first, you should run the bash script that gathers all the dependencies (At least I think it does. If it doesn't or you have errors, let me know by opening an issue).
 
-**Type this is your terminal**
+**Type this is your terminal**<br>
 `./deps.sh`
 
 You should be good to go.
@@ -28,17 +28,17 @@ You should be good to go.
 The build.sh and clean.sh bash scripts handle these tasks.  If you make changes to the code and have build files present already, 
 you may get build errors.  You should try running the clean.sh script to erase all build files to start fresh as a first step.
 
-**To build type this in your terminal**
+**To build type this in your terminal**<br>
 `./build.sh`
 
-**To erase all build files and start fresh run this in your terminal**
+**To erase all build files and start fresh run this in your terminal**<br>
 `./clean.sh`
 
 ## Debugging the project
 
 **ddd** is used as the debugger.  It is a user interface that sits on top of gdb, a command-line debugger used in combination with gcc.  You can find more information [here](https://www.gnu.org/software/ddd/) about ddd.
 
-**Type this in your terminal**
+**Type this in your terminal**<br>
 `./debug.sh`
 
 An instance of ddd should now be running.
@@ -49,14 +49,14 @@ If you have any interest in seeing the assembly output of gcc, than this script 
 It tells gcc to compile, but not assemble all the C source files in *src/* and stores the produced assembly 
 files in *src/dasm_files*
 
-**Type this in your terminal**
+**Type this in your terminal**<br>
 `./dasm.sh`
 
 ## Running the project once it is compiled
 
 To maintain consistency, this is also done through a bash script.
 
-**Type this in your terminal**
+**Type this in your terminal**<br>
 `./run.sh`
 
 ## Conclusions
