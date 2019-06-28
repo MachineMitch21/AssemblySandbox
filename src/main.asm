@@ -7,6 +7,7 @@ extern free_student
 extern perform_asm_tests
 extern is_palindrome
 extern to_string
+extern is_anagram
 
 extern strcpy
 extern snprintf
@@ -99,3 +100,5 @@ SUCCESS: db 'The string is a palindrome', 0, 0xa
 FAIL: db 'The string is not a palindrome', 0, 0xa
 buf: times 64 db 0
 format: db '%d', 0
+anagram_test1: db 'Listen', 0
+anagram_test2: db 'siLeNt', 0
