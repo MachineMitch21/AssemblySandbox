@@ -125,6 +125,9 @@ void merge(char* arr, int low, int mid, int high) {
 		j++;
 		k++;
 	}
+
+  free(left_arr);
+  free(right_arr);
 }
 
 void merge_sort(char* arr, int low, int high) {

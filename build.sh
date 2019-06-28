@@ -12,7 +12,7 @@ for asm_file in "$src_dir"/*.asm; do
 done
 
 for c_file in "$src_dir"/*.c; do
-  gcc -g -c -m32 -o "$obj_dir"/$(basename "$c_file").o "$c_file"
+  gcc -fno-stack-protector -g -c -m32 -o "$obj_dir"/$(basename "$c_file").o "$c_file"
 done
 
 ld -m elf_i386 -dynamic-linker /lib32/ld-linux.so.2 /lib32/libc.so.6 -lc -o "$out_dir"/"$prog_name" "$obj_dir"/*.o
