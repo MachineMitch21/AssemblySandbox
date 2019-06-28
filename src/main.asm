@@ -18,18 +18,18 @@ extern snprintf
 ; @param #3 --> success message, should be a string of ascii chars
 ; @param #4 --> failure message, should be a string of ascii chars
 %macro print_success_fail 4
-  cmp $1, 1          
-  je .print_is_$2
-  jmp .print_not_$2
+  cmp %1, 1          
+  je .print_is_%2
+  jmp .print_not_%2
 
-.print_is_$2:
-  push $3
+.print_is_%2:
+  push %3
   call println
-  jmp .past_print_$2
-.print_not_$2:
-  push $4
+  jmp .past_print_%2
+.print_not_%2:
+  push %4
   call println
-.past_print_$2:
+.past_print_%2:
 %endmacro
 
 _test_to_string:
