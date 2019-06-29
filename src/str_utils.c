@@ -8,23 +8,47 @@
 
 void strrev(char* str) {
 	int len = strlen(str);
-	int m = len * .5f;
-	for (int i = 0; i < m; i++) {
+  // [0], [1], [2], [3]
+  // mid_index == 1
+	int mid_index = len * .5f - 1;
+	for (int i = 0; i <= mid_index; i++) {
+    // swap elements at exact opposite ends of the string
+    // [0], [1], [2], [3]
+    // swap 0 and 3
+    // swap 1 and 2
 		char temp = str[i];
 		str[i] = str[len - 1 - i];
 		str[len - 1 - i] = temp;
 	}
 }
 
+/*
+*   buffer  -> the buffer to store the resulting string in
+*               it is up to you to make sure the buffer is large enough
+*   n       -> the number to convert to a string
+*   divisor -> the type of string output will be decided by this
+*                 ex. 
+*/
 void to_string(char* buffer, int n, int divisor) {
 	int d = 0;
 	int count = 0;
-	while ((d = n % divisor) != 0) {
-		buffer[count++] = d + 0x30;
-		n/=divisor;
-	}
+  do {
+    d = n % divisor;
+    buffer[count++] = d + (d > 9 /* hex value greater than 9?? */ ? 0x37 : 0x30);
+    n/=divisor;
+  } while (n > 0);
+
+  int offset = 0;
+
+  if (divisor == 16) {
+    // this is a hexadecmial value
+    buffer[count + 1] = 'x';
+    buffer[count + 2] = '0'; 
+    offset = 3;
+  }
+
 	strrev(buffer);
-	buffer[count] = '\0';
+	buffer[count + offset] = '\0';
 }
 
 char to_lower(char in) {
