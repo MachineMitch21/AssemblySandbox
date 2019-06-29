@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+// 255 byte buffer might not be big enough for all use cases, but it will suffice for now
+#define MERGE_BUFFER_SIZE 255
+
+
 void strrev(char* str) {
 	int len = strlen(str);
 	int m = len * .5f;
@@ -80,71 +84,82 @@ unsigned int is_anagram(const char* left, const char* right) {
   memset(temp_r, 0, 32);
 	strcpy(temp_l, left);
 	strcpy(temp_r, right);
-	merge_sort(temp_l, 0, strlen(temp_l));
-	merge_sort(temp_r, 0, strlen(temp_r));
+  size_t ls = strlen(temp_l);
+  size_t rs = strlen(temp_r);
+  str_to_lower(temp_l);
+  str_to_lower(temp_r);
+	merge_sort(temp_l, 0, ls - 1);
+	merge_sort(temp_r, 0, rs - 1);
 
-  printf("%s, %s\n", temp_l, left);
-  printf("%s, %s\n", temp_r, right);
-
-	if (strcmp(str_to_lower(temp_l), str_to_lower(temp_r)) == 0) {
+	if (strcmp(temp_l, temp_r) == 0) {
 		return 1;
 	} 
 
 	return 0;
 }
 
-void merge(char* arr, int low, int mid, int high) {
-	int i, j, k;
-	int left_len = mid - low + 1;
-	int right_len = high - mid;
+void merge_sort(char* arr, int low, int high) {
+  int mid;
 
-	char* left_arr = malloc(left_len);
-	char* right_arr = malloc(right_len);
-
-	for (i = 0; i < left_len; i++) {
-		left_arr[i] = arr[low + i];
-	}
-
-	for (j = 0; j < right_len; j++) {
-		right_arr[j] = arr[mid + low + j];
-	}
-
-	i = 0, j = 0, k = low;
-
-	while (i < left_len && j < right_len) {
-		if (left_arr[i] <= right_arr[j]) {
-			arr[k] = left_arr[i];
-			i++;
-		} else {
-			arr[k] = right_arr[j];
-			j++;
-		}
-		k++;
-	}
-
-	while (i < left_len) {
-		arr[k] = left_arr[i];
-		i++;
-		k++;
-	}
-
-	while (j < right_len) {
-		arr[k] = right_arr[j];
-		j++;
-		k++;
-	}
-
-  free(left_arr);
-  free(right_arr);
+  if (low < high) {
+    // [0], [1], [2], [3], [4], [5]
+    // taking right array [3], [4], [5]
+    // low == 3
+    // high == 5
+    // low + high == 8
+    // 8 * .5f == 4
+    // therefore midpoint of right array is at the 4th index of { arr }
+    mid = (low + high) * .5f;
+    // sort left array           
+    merge_sort(arr, low, mid);
+    // sort right array
+    merge_sort(arr, mid + 1, high);
+    merge(arr, low, mid, mid + 1, high);  
+  }
 }
 
-void merge_sort(char* arr, int low, int high) {
-	if (low < high) {
-		int mid = low + (high - low) * .5f;
+void merge(char* arr, int low_left, int high_left, int low_right, int high_right) {
+  char temp[MERGE_BUFFER_SIZE];
+  memset(temp, 0, MERGE_BUFFER_SIZE);
+  int i, j, k;
+  // start of the left array
+  i = low_left;     
+  // start of the right array
+  j = low_right;
+  k = 0;
 
-		merge_sort(arr, low, mid);
-		merge_sort(arr, mid + 1, high);
+  // do not go above either left high index or the right high index
+  while (i <= high_left && j <= high_right) {
+    // [0], [1], [2], [3], [4], [5]
+    // say i == 2 && j == 5
+    // remember (i is set to the start of the left array which is at index 0 and j is set to the start of the right which is index 3)
+    // arr[i] is <= arr[j] given arr[i] == 2 and arr[j] == 5
+    // array values in this example are set to the same as their index values for simplicity
+    // for every time we insert a value in the temp array, we increment the counter { k } which we keep as the index into temp
+    // so values just keep getting inserted at the back of temp;
+    if (arr[i] <= arr[j]) {
+      temp[k++] = arr[i++];
+    } else {
+      temp[k++] = arr[j++];
+    }
+  }
 
-		merge(arr, low, mid, high);
-	}
+  // this is for cases where the size of arr is odd
+  // [0], [1], [2]
+  // when splitting the array, the left array will end up being [0], [1]
+  // leaving [2] to be the right array
+  // in this case, of course, high_left will end up being larger than high_right
+  // causing us to get out of the above loop sooner than all the elements have been evaluated
+  while (i <= high_left) {
+    temp[k++] = arr[i++];
+  }
+
+  while (j <= high_right) {
+    temp[k++] = arr[j++];
+  }
+
+  // Refill arr with the sorted array values stored in temp
+  for (i = low_left, j = 0; i <= high_right; i++, j++) {
+    arr[i] = temp[j];
+  }
 }
