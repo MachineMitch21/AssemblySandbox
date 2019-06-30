@@ -18,7 +18,7 @@ I have no particular reason for doing so other than to keep dependencies as limi
 
 At first, you should run the bash script that gathers all the dependencies (At least I think it does. If it doesn't or you have errors, let me know by opening an issue).
 
-**Type this is your terminal**<br>
+**Type this in your terminal**<br>
 `./deps.sh`
 
 You should be good to go.
