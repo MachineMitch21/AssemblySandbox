@@ -1,10 +1,12 @@
 %ifndef DEFINES_ASM
 %define DEFINES_ASM
 
+; file descriptors for standard io paths
 STDIN 					equ 0
 STDOUT 					equ 1
 STDERR 					equ 2
 
+; system call numbers to be set in the eax register before the 0x80 interrupt is called
 SYS_EXIT				equ 1
 SYS_FORK				equ 2
 SYS_READ				equ 3

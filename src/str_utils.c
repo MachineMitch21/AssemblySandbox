@@ -42,13 +42,12 @@ void to_string(char* buffer, int n, int divisor) {
 
   if (divisor == 16) {
     // this is a hexadecmial value
-    buffer[count + 1] = 'x';
-    buffer[count + 2] = '0'; 
-    offset = 3;
+    buffer[count++] = 'x';
+    buffer[count++] = '0'; 
   }
 
 	strrev(buffer);
-	buffer[count + offset] = '\0';
+	buffer[count++] = '\0';
 }
 
 char to_lower(char in) {
