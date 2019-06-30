@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "str_utils.h"
+
 // 255 byte buffer might not be big enough for all use cases, but it will suffice for now
 #define MERGE_BUFFER_SIZE 255
 
@@ -30,22 +32,43 @@ void strrev(char* str) {
 *                 ex. 
 */
 void to_string(char* buffer, int n, int divisor) {
-	int d = 0;
+	int digit = 0;
+  // count keeps track of how large the buffer is getting
+  // every time an element is inserted into the buffer
+  // it should be indexed with this convention to maintain the correct count -> [count++]
 	int count = 0;
+
+  // the offset to the hex values A, B, C, D, E, F from the decimal digit values in the ascii table
+  const char HEX_ASCII_OFFSET = 0x37;
+  // the offset from the decimal digits to their ascii equivalents in the ascii table
+  const char DIGIT_ASCII_OFFSET = 0x30;
   do {
-    d = n % divisor;
-    buffer[count++] = d + (d > 9 /* hex value greater than 9?? */ ? 0x37 : 0x30);
+    digit = n % divisor;
+    // not sure about this code formatting
+    buffer[count++] = digit + (
+      digit > 9 /* hex value greater than 9?? */ 
+        ? HEX_ASCII_OFFSET 
+        : DIGIT_ASCII_OFFSET
+    );
     n/=divisor;
   } while (n > 0);
 
   int offset = 0;
 
-  if (divisor == 16) {
-    // this is a hexadecmial value
+  if (divisor == DIV_HEX) {
+    // give the hexadecimal string the 0x prefix format convention
     buffer[count++] = 'x';
     buffer[count++] = '0'; 
+  } else if (divisor == DIV_BIN) {
+    // inversion of the remainder gives us how many zeros 
+    // we need to fill to complete the most significant bits
+    int padding = 8 - (count % 8);
+    for (int i = 0; i < padding; i++) {
+      buffer[count++] = '0';
+    }
   }
 
+  // values were inserted onto the string in reverse order
 	strrev(buffer);
 	buffer[count++] = '\0';
 }
@@ -88,9 +111,6 @@ unsigned int is_palindrome(const char* str) {
   
   if (len <= 3) return 0;
 
-  // This is an undefined reference to floor when using the above 'len' variable
-  // Why?  I do not know... :(
-  // double m = floor((double)len * .5f);  
   int m = len * .5f;
   for (int i = 0; i <= m; i++) {
     if (to_lower(str[i]) != to_lower(str[len - 1 - i])) {
