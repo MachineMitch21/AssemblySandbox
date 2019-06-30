@@ -38,7 +38,7 @@ void to_string(char* buffer, int n, int divisor) {
   // it should be indexed with this convention to maintain the correct count -> [count++]
 	int count = 0;
 
-  // the offset to the hex values A, B, C, D, E, F from the decimal digit values in the ascii table
+  // the offset to the hex values A, B, C, D, E, F from their equivalent decimal values in the ascii table
   const char HEX_ASCII_OFFSET = 0x37;
   // the offset from the decimal digits to their ascii equivalents in the ascii table
   const char DIGIT_ASCII_OFFSET = 0x30;
