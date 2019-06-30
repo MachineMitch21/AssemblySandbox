@@ -36,8 +36,8 @@ _test_to_string:
 	push ebp
 	mov ebp, esp
 
-	push 10
-	push 1543
+	push 2
+	push 765
 	push buf
 	call to_string
 

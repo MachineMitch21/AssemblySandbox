@@ -2,29 +2,75 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "str_utils.h"
+
 // 255 byte buffer might not be big enough for all use cases, but it will suffice for now
 #define MERGE_BUFFER_SIZE 255
 
 
 void strrev(char* str) {
 	int len = strlen(str);
-	int m = len * .5f;
-	for (int i = 0; i < m; i++) {
+  // [0], [1], [2], [3]
+  // mid_index == 1
+	int mid_index = len * .5f - 1;
+	for (int i = 0; i <= mid_index; i++) {
+    // swap elements at exact opposite ends of the string
+    // [0], [1], [2], [3]
+    // swap 0 and 3
+    // swap 1 and 2
 		char temp = str[i];
 		str[i] = str[len - 1 - i];
 		str[len - 1 - i] = temp;
 	}
 }
 
+/*
+*   buffer  -> the buffer to store the resulting string in
+*               it is up to you to make sure the buffer is large enough
+*   n       -> the number to convert to a string
+*   divisor -> the type of string output will be decided by this
+*                 ex. 
+*/
 void to_string(char* buffer, int n, int divisor) {
-	int d = 0;
+	int digit = 0;
+  // count keeps track of how large the buffer is getting
+  // every time an element is inserted into the buffer
+  // it should be indexed with this convention to maintain the correct count -> [count++]
 	int count = 0;
-	while ((d = n % divisor) != 0) {
-		buffer[count++] = d + 0x30;
-		n/=divisor;
-	}
+
+  // the offset to the hex values A, B, C, D, E, F from their equivalent decimal values in the ascii table
+  const char HEX_ASCII_OFFSET = 0x37;
+  // the offset from the decimal digits to their ascii equivalents in the ascii table
+  const char DIGIT_ASCII_OFFSET = 0x30;
+  do {
+    digit = n % divisor;
+    // not sure about this code formatting
+    buffer[count++] = digit + (
+      digit > 9 /* hex value greater than 9?? */ 
+        ? HEX_ASCII_OFFSET 
+        : DIGIT_ASCII_OFFSET
+    );
+    n/=divisor;
+  } while (n > 0);
+
+  int offset = 0;
+
+  if (divisor == DIV_HEX) {
+    // give the hexadecimal string the 0x prefix format convention
+    buffer[count++] = 'x';
+    buffer[count++] = '0'; 
+  } else if (divisor == DIV_BIN) {
+    // inversion of the remainder gives us how many zeros 
+    // we need to fill to complete the most significant bits
+    int padding = 8 - (count % 8);
+    for (int i = 0; i < padding; i++) {
+      buffer[count++] = '0';
+    }
+  }
+
+  // values were inserted onto the string in reverse order
 	strrev(buffer);
-	buffer[count] = '\0';
+	buffer[count++] = '\0';
 }
 
 char to_lower(char in) {
@@ -65,9 +111,6 @@ unsigned int is_palindrome(const char* str) {
   
   if (len <= 3) return 0;
 
-  // This is an undefined reference to floor when using the above 'len' variable
-  // Why?  I do not know... :(
-  // double m = floor((double)len * .5f);  
   int m = len * .5f;
   for (int i = 0; i <= m; i++) {
     if (to_lower(str[i]) != to_lower(str[len - 1 - i])) {
