@@ -109,7 +109,7 @@ char* str_to_upper(char* str) {
 unsigned int is_palindrome(const char* str) {
   int len = strlen(str);
   
-  if (len <= 3) return 0;
+  if (len < 3) return 0;
 
   int m = len * .5f;
   for (int i = 0; i <= m; i++) {

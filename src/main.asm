@@ -32,6 +32,17 @@ extern snprintf
 .past_print_%2:
 %endmacro
 
+_add:
+	push ebp
+	mov ebp, esp
+
+	mov eax, [esp + 8]
+	add eax, [esp + 12]
+
+	mov esp, ebp
+	pop ebp
+	ret
+
 _test_to_string:
 	push ebp
 	mov ebp, esp
@@ -104,7 +115,7 @@ MSG: db 'Hello, World!', 0, 0xa
 name: db 'Mitch', 0
 addr: db '2065 South State Road 3', 0
 mitch: times 132 db 0
-PALINDROME: db 'hANnAh', 0
+PALINDROME: db 'then', 0
 SUCCESS: db 'The string is a palindrome', 0, 0xa
 FAIL: db 'The string is not a palindrome', 0, 0xa
 anagram_msg_success: db 'The strings are anagrams', 0, 0xa
